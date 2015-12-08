@@ -42,15 +42,17 @@ module Embulk
     end
 
     def run
+      size = 0
       @client.query(@query) do |q|
         q.each_row {|row|
           page_builder.add(row)
         }
+        size = q.rows.size
       end
 
       page_builder.finish
 
-      task_report = {}
+      task_report = { size: size }
       return task_report
     end
   end
