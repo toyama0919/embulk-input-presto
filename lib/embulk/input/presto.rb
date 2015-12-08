@@ -37,6 +37,8 @@ module Embulk
         schema: task['schema']
       )
       @query = task["query"]
+
+      Embulk.logger.info "SQL: #{@query}"
     end
 
     def run
