@@ -45,7 +45,8 @@ module Embulk
       size = 0
       @client.query(@query) do |q|
         q.each_row {|row|
-          page_builder.add(row)
+          converted_values = row.map.with_index { |value,i| convert_value(value, schema[i]) }
+          page_builder.add(converted_values)
         }
         size = q.rows.size
       end
@@ -54,6 +55,37 @@ module Embulk
 
       task_report = { size: size }
       return task_report
+    end
+
+    def convert_value(value, field)
+      return nil if value.nil?
+      case field["type"]
+      when :string
+        value
+      when :long
+        value.to_i
+      when :double
+        value.to_f
+      when :boolean
+        if value.is_a?(TrueClass) || value.is_a?(FalseClass)
+          value
+        else
+          downcased_val = value.downcase
+          case downcased_val
+          when 'true' then true
+          when 'false' then false
+          when '1' then true
+          when '0' then false
+          else nil
+          end
+        end
+      when :timestamp
+        Time.parse(value)
+      when :json
+        value
+      else
+        raise "Unsupported type #{field['type']}"
+      end
     end
   end
 end
