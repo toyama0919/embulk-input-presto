@@ -1,4 +1,4 @@
-# Facebook Presto input plugin for Embulk
+# Facebook Presto input plugin for Embulk [![Build Status](https://secure.travis-ci.org/toyama0919/embulk-input-presto.png?branch=master)](http://travis-ci.org/toyama0919/embulk-input-presto)
 
 Facebook Presto input plugin for Embulk.
 [see](https://prestodb.io/).
