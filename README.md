@@ -18,7 +18,11 @@ Facebook Presto input plugin for Embulk.
 - **catalog**: catalog (string, default: `"native"`)
 - **query**: query (string, required)
 - **user**: user (string, default: `"embulk"`)
-- **columns**: columns (array, required)
+- **columns**(**deprecated**): columns (array, required)
+  - **name**: name (string, required)
+  - **type**: type (string, required)
+
+**Warning** : **columns** deprecated since over v0.2.0. Support auto fetch schema.
 
 ## Example
 
@@ -39,23 +43,17 @@ in:
     group by keyword
     having count(*) >= 10
     order by count(*) desc
-  columns:
-    - {name: keyword, type: string}
-    - {name: count, type: long}
 out:
   type: stdout
 ```
 
-## Limited
-* Only the data type that Embulk supports is possible.
-  * TIMESTAMP
-  * LONG
-  * DOUBLE
-  * BOOLEAN
-  * STRING
-
-* Presto is not support Prepared statement.
-  * Can't fetch schema by sql
+## Support type
+* TIMESTAMP
+* LONG
+* DOUBLE
+* BOOLEAN
+* STRING
+* JSON
 
 ## Build
 
