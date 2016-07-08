@@ -7,7 +7,7 @@ module Embulk
           column_name_raw, column_type_raw = explain_text.split(' => ')
           names = column_name_raw.split('[').last.split(']').first.split(',').map{ |name| name.strip }
           types = column_type_raw.split('[').last.split(']').first.split(',').map{ |info| info.split(':').last }
-          Hash[*names.zip(types).flatten]
+          names.zip(types)
         end
       end
     end
