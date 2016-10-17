@@ -42,6 +42,8 @@ module Embulk
             :boolean
           elsif type.start_with?("bigint")
             :long
+          elsif type.start_with?("integer")
+            :long
           elsif type.start_with?("double")
             :double
           elsif type.start_with?("decimal")
