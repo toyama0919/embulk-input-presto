@@ -18,6 +18,8 @@ module Embulk
           when :boolean
             if value.is_a?(TrueClass) || value.is_a?(FalseClass)
               value
+            elsif value.class == Fixnum
+              value == 0 ? false : true
             else
               downcased_val = value.downcase
               case downcased_val
@@ -39,6 +41,8 @@ module Embulk
 
         def self.get_type(type)
           if type.start_with?("boolean")
+            :boolean
+          elsif type.start_with?("tinyint")
             :boolean
           elsif type.start_with?("bigint")
             :long
