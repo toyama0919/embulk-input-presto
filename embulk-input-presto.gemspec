@@ -1,7 +1,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "embulk-input-presto"
-  spec.version       = "0.2.4"
+  spec.version       = "0.2.5"
   spec.authors       = ["toyama0919"]
   spec.summary       = "Facebook Presto input plugin for Embulk"
   spec.description   = "Facebook Presto input plugin for Embulk."
