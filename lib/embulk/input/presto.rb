@@ -43,11 +43,7 @@ module Embulk
         Embulk.logger.debug("SQL: #{explain_query}")
         explain_result = Connection.get_client(task).run("explain (FORMAT TEXT) " + task["query"])
 
-        columns = []
-        ExplainParser.parse(explain_result).each_with_index do |(name, type), i|
-          columns << Column.new(i, name, TypeConverter.get_type(type))
-        end
-        columns
+        ExplainParser.build_output_columns(explain_result)
       end
 
       def init
