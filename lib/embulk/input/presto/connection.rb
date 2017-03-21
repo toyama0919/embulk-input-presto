@@ -10,6 +10,21 @@ module Embulk
             schema: task['schema']
           )
         end
+
+        def initialize(task)
+          @presto_client = self.class.get_client(task)
+          @query = task['query']
+
+          Embulk.logger.info "SQL: #{@query}"
+        end
+
+        def query
+          @presto_client.query(@query) do |q|
+            q.each_row {|row|
+              yield(row) if block_given?
+            }
+          end
+        end
       end
     end
   end

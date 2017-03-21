@@ -47,26 +47,19 @@ module Embulk
       end
 
       def init
-        @client = Connection.get_client(task)
-        @query = task["query"]
+        @client = Connection.new(task)
         @type_converter = TypeConverter.new
-
-        Embulk.logger.info "SQL: #{@query}"
       end
 
       def run
-        size = 0
-        @client.query(@query) do |q|
-          q.each_row {|row|
-            converted_values = row.map.with_index { |value,i| @type_converter.convert_value(value, schema[i]) }
-            page_builder.add(converted_values)
-          }
-          size = q.rows.size
+        size = @client.query do |row|
+          converted_values = row.map.with_index { |value,i| @type_converter.convert_value(value, schema[i]) }
+          page_builder.add(converted_values)
         end
 
         page_builder.finish
 
-        task_report = { size: size }
+        task_report = {}
         return task_report
       end
     end
